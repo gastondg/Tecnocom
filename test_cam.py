@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 
 # Create a VideoCapture object
-cap = cv2.VideoCapture('http://admin:tecno20@10.10.4.151')
+cap = cv2.VideoCapture('http://admin:tecno20@10.10.4.151:443')
 
 # Check if camera opened successfully
 if (cap.isOpened() == False):
