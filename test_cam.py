@@ -3,7 +3,7 @@ import numpy as np
 from datetime import datetime
 
 # Create a VideoCapture object
-cap = cv2.VideoCapture('rtsp://admin:tecno20@10.10.4.151:554/cam/realmonitor?channel=1&subtype=1')
+cap = cv2.VideoCapture('rtsp://admin:tecno20@10.10.4.152:554/cam/realmonitor?channel=1&subtype=1')
 #cap = cv2.VideoCapture(0)
 
 
@@ -17,7 +17,7 @@ frame_width = int(cap.get(3))
 frame_height = int(cap.get(4))
 
 # Define the codec and create VideoWriter object.The output is stored in 'outpy.avi' file.
-out = cv2.VideoWriter('outpy151.avi', cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'),\
+out = cv2.VideoWriter('outpy152.avi', cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'),\
        20, (frame_width, frame_height))
 
 # fecha inicio
