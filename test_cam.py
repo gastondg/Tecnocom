@@ -1,9 +1,11 @@
 import cv2
 import numpy as np
+from datetime import datetime
 
 # Create a VideoCapture object
-cap = cv2.VideoCapture('http://10.10.4.151:80/1')
-#cap = cv2.VideoCapture('http://admin:tecno20@10.10.4.151:80')
+cap = cv2.VideoCapture('rtsp://admin:tecno20@10.10.4.152:554/cam/realmonitor?channel=1&subtype=1')
+#cap = cv2.VideoCapture(0)
+
 
 # Check if camera opened successfully
 if (cap.isOpened() == False):
@@ -15,20 +17,27 @@ frame_width = int(cap.get(3))
 frame_height = int(cap.get(4))
 
 # Define the codec and create VideoWriter object.The output is stored in 'outpy.avi' file.
-""" out = cv2.VideoWriter('outpy.avi', cv2.VideoWriter_fourcc(
-    'M', 'J', 'P', 'G'), 20, (frame_width, frame_height)) """
+out = cv2.VideoWriter('outpy.avi', cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'),\
+       20, (frame_width, frame_height))
 
+# fecha inicio
+a = datetime.now()
 while(True):
   ret, frame = cap.read()
 
   if ret == True:
 
     # Write the frame into the file 'output.avi'
-    #out.write(frame)
+    out.write(frame)
 
     # Display the resulting frame
     cv2.imshow('frame', frame)
-
+    
+    # controlo segundos pasados
+    b = datetime.now()
+    c = b-a
+    if int(c.seconds) == 10:
+      break
     # Press Q on keyboard to stop recording
     if cv2.waitKey(1) & 0xFF == ord('q'):
       break
