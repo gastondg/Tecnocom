@@ -13,12 +13,14 @@ if (cap.isOpened() == False):
 
 # Default resolutions of the frame are obtained.The default resolutions are system dependent.
 # We convert the resolutions from float to integer.
-frame_width = int(cap.get(3))
-frame_height = int(cap.get(4))
+#frame_width = int(cap.get(3))
+#frame_height = int(cap.get(4))
 
 # Define the codec and create VideoWriter object.The output is stored in 'outpy.avi' file.
-out = cv2.VideoWriter('outpy152.avi', cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'),\
-       20, (frame_width, frame_height))
+""" out = cv2.VideoWriter('outpy152.avi', cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'),\
+       20, (frame_width, frame_height)) """
+out = cv2.VideoWriter('outpy152-1080p.avi', cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'),\
+                      15, (1920, 1080))
 
 # fecha inicio
 a = datetime.now()
