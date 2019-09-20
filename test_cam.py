@@ -38,7 +38,7 @@ while(True):
     # controlo segundos pasados
     b = datetime.now()
     c = b-a
-    if int(c.seconds) == 10:
+    if int(c.seconds) == 20:
       break
     # Press Q on keyboard to stop recording
     if cv2.waitKey(1) & 0xFF == ord('q'):
