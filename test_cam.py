@@ -4,7 +4,7 @@ from datetime import datetime
 
 # Create a VideoCapture object
 #cap = cv2.VideoCapture('rtsp://admin:tecno20@10.10.4.152:554/cam/realmonitor?channel=1&subtype=1')
-cap = cv2.VideoCapture("http://10.10.4.152/axis-cgi/mjpg/video.cgi?camera=1")
+cap = cv2.VideoCapture("http://10.10.4.152/axis-cgi/mjpg/video.cgi?camera=2")
 
 
 # Check if camera opened successfully
