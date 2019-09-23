@@ -4,7 +4,7 @@ from datetime import datetime
 
 # Create a VideoCapture object
 #cap = cv2.VideoCapture('rtsp://admin:tecno20@10.10.4.152:554/cam/realmonitor?channel=1&subtype=1')
-cap = cv2.VideoCapture("http://10.10.4.152/axis-cgi/mjpg/video.cgi?camera=0")
+cap = cv2.VideoCapture("http://10.10.4.151/axis-cgi/mjpg/video.cgi?camera=0")
 
 
 # Check if camera opened successfully
@@ -17,8 +17,9 @@ frame_width = int(cap.get(3))
 frame_height = int(cap.get(4))
 print(frame_width, frame_height)
 # Define the codec and create VideoWriter object.The output is stored in 'outpy.avi' file.
-out = cv2.VideoWriter('outpy152.avi', cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'),\
-       20, (frame_width, frame_height)) 
+filename = "outpy151.avi"
+out = cv2.VideoWriter(filename, cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'),\
+       15, (frame_width, frame_height)) 
 #out = cv2.VideoWriter('outpy152-1080p.avi', cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'),\
 #                      15, (1920, 1080))
 
