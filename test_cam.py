@@ -29,7 +29,7 @@ for cap in caps:
   #                      15, (1920, 1080))
 
   # fecha inicio
-  a = datetime.now()
+  start = time.time()
   while(True):
     ret, frame = cap.read()
 
@@ -42,9 +42,9 @@ for cap in caps:
       cv2.imshow('frame', frame)
       
       # controlo segundos pasados
-      b = datetime.now()
-      c = b-a
-      if int(c.seconds) >= 15:
+      end = time.time()
+      seconds_elapsed = end - start
+      if int(seconds_elapsed) >= 300:
         print(c.seconds)
         break
       # Press Q on keyboard to stop recording
