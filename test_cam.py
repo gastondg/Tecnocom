@@ -5,7 +5,7 @@ from datetime import datetime
 caps = ['rtsp://10.10.4.152:554/cam/realmonitor?channel=1&subtype=0&authbasic=YWRtaW46dGVjbm8yMA==',
         'rtsp://10.10.4.151:554/cam/realmonitor?channel=1&subtype=0&authbasic=YWRtaW46dGVjbm8yMA==']
 
-filename = "outpy152.avi"
+filename = "/videos/outpy152.avi"
 for cap in caps:
   # Create a VideoCapture object
   cap = cv2.VideoCapture(cap)
@@ -44,7 +44,7 @@ for cap in caps:
       # controlo segundos pasados
       b = datetime.now()
       c = b-a
-      if int(c.seconds) >= 25:
+      if int(c.seconds) >= 15:
         print(c.seconds)
         break
       # Press Q on keyboard to stop recording
@@ -57,7 +57,7 @@ for cap in caps:
 
   # When everything done, release the video capture and video write objects
   cap.release()
-  filename = "outpy151.avi"
+  filename = "/videos/outpy151.avi"
   #out.release()
 
   # Closes all the frames
