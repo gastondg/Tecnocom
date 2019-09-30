@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-from datetime import datetime
+import time
 
 caps = ['rtsp://10.10.4.152:554/cam/realmonitor?channel=1&subtype=0&authbasic=YWRtaW46dGVjbm8yMA==',
         'rtsp://10.10.4.151:554/cam/realmonitor?channel=1&subtype=0&authbasic=YWRtaW46dGVjbm8yMA==']
@@ -45,7 +45,6 @@ for cap in caps:
       end = time.time()
       seconds_elapsed = end - start
       if int(seconds_elapsed) >= 300:
-        print(c.seconds)
         break
       # Press Q on keyboard to stop recording
       if cv2.waitKey(1) & 0xFF == ord('q'):
