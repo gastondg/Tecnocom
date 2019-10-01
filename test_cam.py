@@ -29,6 +29,8 @@ for cap in caps:
   #                      15, (1920, 1080))
 
   # fecha inicio
+  i = 1
+  filename = "video151-{}.avi"
   start = time.time()
   while(True):
     ret, frame = cap.read()
