@@ -15,13 +15,15 @@ def comprimir_video(filename, out):
   zip_file.write(filename, compress_type=zipfile.ZIP_DEFLATED)
   zip_file.close()
 
-def get_nuevo_vid(filename, frame_width, frame_height):
+def get_nuevo_vid(cam_url, filename, frame_width, frame_height):
   """ Devuelve un nuevo cv2 writer de video """
-  return cv2.VideoWriter(filename, cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'),\
+  out = cv2.VideoWriter(filename, cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'),\
       15, (frame_width, frame_height))
+  cap = cv2.VideoCapture(cam_url)
+  return cap, out
 
 cam_url = 'rtsp://10.10.4.151:554/cam/realmonitor?channel=1&subtype=0&authbasic=YWRtaW46dGVjbm8yMA=='
-
+# cam_url = 0
 # Create a VideoCapture object
 cap = cv2.VideoCapture(cam_url)
 
@@ -40,10 +42,10 @@ i = 1
 
 filename = "video151-{}.avi"
 # Define the codec and create VideoWriter object.The output is stored in 'outpy.avi' file.
-out = get_nuevo_vid(filename.format(i), frame_width, frame_height)
+cap, out = get_nuevo_vid(cam_url,filename.format(i), frame_width, frame_height)
 
 start = time.time()
-total_elapsed = time.time()
+total_elapsed = time.time()q
 while(get_elapsed_seconds(total_elapsed) < 43000):
   ret, frame = cap.read()
 
@@ -60,8 +62,9 @@ while(get_elapsed_seconds(total_elapsed) < 43000):
       """ p = multiprocessing.Process(target=comprimir_video, args=[filename.format(i), out])
       p.start() """
       out.release()
+      cap.release()
       i += 1
-      out = get_nuevo_vid(filename.format(i), frame_width, frame_height)
+      cap, out = get_nuevo_vid(cam_url,filename.format(i), frame_width, frame_height)
       start = time.time()
 
     # Press Q on keyboard to stop recording
