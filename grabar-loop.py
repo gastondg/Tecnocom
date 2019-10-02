@@ -45,7 +45,7 @@ filename = "video151-{}.avi"
 cap, out = get_nuevo_vid(cam_url,filename.format(i), frame_width, frame_height)
 
 start = time.time()
-total_elapsed = time.time()q
+total_elapsed = time.time()
 while(get_elapsed_seconds(total_elapsed) < 43000):
   ret, frame = cap.read()
 
