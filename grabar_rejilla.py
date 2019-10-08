@@ -1,6 +1,10 @@
 import cv2
 import numpy as np
 import time
+from datetime import datetime
+
+now = datetime.now()
+now = now.strftime("%m-%d-%Y %H-%M")
 
 """  
 A TENER EN CUENTA: 
@@ -12,7 +16,7 @@ Nombres válidos:
 2019-11-05 08:30 contaminacion polvillo
 """
 
-NOMBRE_VIDEO = "AAAA-MM-DD hh-mm nombre" + "{}.avi"
+NOMBRE_VIDEO = now + " nombre" + "{}.avi"
 
 
 def get_elapsed_seconds(start):
