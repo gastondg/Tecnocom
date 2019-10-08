@@ -1,1 +1,0 @@
-rsync -avz -e ssh ~/Documentos/Tecnocom/ corebi@10.10.1.171:~/Documentos/Tecnocom/
