@@ -55,7 +55,7 @@ while(get_elapsed_seconds(total_elapsed) < 43000):
     # Display the resulting frame
     cv2.imshow('frame', frame)
     
-    if int(get_elapsed_seconds(start)) >= 10:
+    if int(get_elapsed_seconds(start)) >= 1500:
       # pasaron 15 min -> grabo el video 
       out.release()
     
@@ -63,6 +63,7 @@ while(get_elapsed_seconds(total_elapsed) < 43000):
       out = get_nuevo_vid(NOMBRE_VIDEO.format(i), frame_width, frame_height)
       start = time.time()
 
+    k = cv2.waitKey(1)
     # Press Q on keyboard to stop recording
     if k == ord('q'):
       print("Bye")
