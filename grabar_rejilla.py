@@ -37,12 +37,12 @@ frame_width = int(cap.get(3))
 frame_height = int(cap.get(4))
 print("Empezando a grabar video...")
 
+i = 1
+
 out = get_nuevo_vid(NOMBRE_VIDEO.format(i), frame_width, frame_height)
 
 start = time.time()
 total_elapsed = time.time()
-
-i = 1
 
 while(get_elapsed_seconds(total_elapsed) < 43000):
   ret, frame = cap.read()
