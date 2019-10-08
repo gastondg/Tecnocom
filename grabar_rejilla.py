@@ -64,9 +64,10 @@ while(get_elapsed_seconds(total_elapsed) < 43000):
       start = time.time()
 
     # Press Q on keyboard to stop recording
-    if cv2.waitKey(1) & 0xFF == ord('q'):
+    if k == ord('q'):
+      print("Bye")
       break
-
+    
   # Break the loop
   else:
     break
