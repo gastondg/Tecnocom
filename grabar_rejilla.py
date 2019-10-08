@@ -19,6 +19,12 @@ def get_elapsed_seconds(start):
   # devuelve el tiempo transcurrido, en segundos
   return int(time.time() - start)
 
+def get_nuevo_vid(filename, frame_width, frame_height):
+  """ Devuelve un nuevo cv2 writer de video """
+  out = cv2.VideoWriter(filename, cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'),\
+      15, (frame_width, frame_height))
+  return out
+  
 cam_url = 'rtsp://10.10.4.151:554/cam/realmonitor?channel=1&subtype=0&authbasic=YWRtaW46dGVjbm8yMA=='
 
 cap = cv2.VideoCapture(cam_url)
