@@ -19,12 +19,12 @@ def get_elapsed_seconds(start):
   # devuelve el tiempo transcurrido, en segundos
   return int(time.time() - start)
 
-def get_nuevo_vid(filename, frame_width, frame_height):
+def get_nuevo_vid(NOMBRE_VIDEO, frame_width, frame_height):
   """ Devuelve un nuevo cv2 writer de video """
-  out = cv2.VideoWriter(filename, cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'),\
+  out = cv2.VideoWriter(NOMBRE_VIDEO, cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'),\
       15, (frame_width, frame_height))
   return out
-  
+
 cam_url = 'rtsp://10.10.4.151:554/cam/realmonitor?channel=1&subtype=0&authbasic=YWRtaW46dGVjbm8yMA=='
 
 cap = cv2.VideoCapture(cam_url)
@@ -37,7 +37,7 @@ frame_width = int(cap.get(3))
 frame_height = int(cap.get(4))
 print("Empezando a grabar video...")
 
-out = get_nuevo_vid(filename.format(i), frame_width, frame_height)
+out = get_nuevo_vid(NOMBRE_VIDEO.format(i), frame_width, frame_height)
 
 start = time.time()
 total_elapsed = time.time()
@@ -60,7 +60,7 @@ while(get_elapsed_seconds(total_elapsed) < 43000):
       out.release()
     
       i += 1
-      out = get_nuevo_vid(filename.format(i), frame_width, frame_height)
+      out = get_nuevo_vid(NOMBRE_VIDEO.format(i), frame_width, frame_height)
       start = time.time()
 
     # Press Q on keyboard to stop recording
