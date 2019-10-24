@@ -49,14 +49,22 @@ def select_mask(frame):
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     #color_picker = ColorPicker()
     #lower_color, upper_color = color_picker.pick_color(hsv)
-    lower_color = (105,10,150)
-    upper_color = (115,40,250)
+    lower_color = (105,10,100)
+    upper_color = (115,40,255)
     
     mask = cv2.inRange(hsv, lower_color, upper_color)
+    
+    """ lower_color = (150,0,200)
+    upper_color = (150,10,255)
+    
+    mask2 = cv2.inRange(hsv, lower_color, upper_color)
+
+    mask = mask + mask2 """
+
     return mask
 
 # Leer el archivo
-cap = cv2.VideoCapture('./videos/outpy151.avi')
+cap = cv2.VideoCapture('../Videos/outpy151.avi')
 
 # Check if camera opened successfully
 if (cap.isOpened()== False): 
@@ -87,8 +95,10 @@ while(cap.isOpened()):
       corte = frame[y:y+h, x:x+w]
       # obtengo la mask eligiendo el color
       mask = select_mask(corte)
+      mask_inv = cv2.bitwise_not(mask)
       cv2.imshow("Mask", mask)
-      
+      cv2.imshow("Mask Invertida", mask_inv)
+    
 
     cv2.imshow("Cam", frame)
     

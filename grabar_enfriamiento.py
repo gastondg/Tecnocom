@@ -4,7 +4,7 @@ import time
 from datetime import datetime
 
 now = datetime.now()
-now = now.strftime("%m-%d-%Y %H-%M")
+now = now.strftime("%Y-%m-%d %H-%M")
 
 """  
 A TENER EN CUENTA: 
@@ -17,7 +17,7 @@ Nombres válidos:
 """
 
 NOMBRE_VIDEO = now + " nombre" + "{}.avi"
-
+path = "./Videos/"
 
 def get_elapsed_seconds(start):
   # devuelve el tiempo transcurrido, en segundos
@@ -25,7 +25,7 @@ def get_elapsed_seconds(start):
 
 def get_nuevo_vid(NOMBRE_VIDEO, frame_width, frame_height):
   """ Devuelve un nuevo cv2 writer de video """
-  out = cv2.VideoWriter(NOMBRE_VIDEO, cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'),\
+  out = cv2.VideoWriter(path+NOMBRE_VIDEO, cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'),\
       15, (frame_width, frame_height))
   return out
 
