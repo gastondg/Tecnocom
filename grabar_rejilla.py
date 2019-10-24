@@ -4,7 +4,7 @@ import time
 from datetime import datetime
 
 now = datetime.now()
-now = now.strftime("%m-%d-%Y %H-%M")
+now = now.strftime("%Y-%m-%d %H-%M")
 
 """  
 A TENER EN CUENTA: 
@@ -48,7 +48,7 @@ out = get_nuevo_vid(NOMBRE_VIDEO.format(i), frame_width, frame_height)
 start = time.time()
 total_elapsed = time.time()
 
-while(get_elapsed_seconds(total_elapsed) < 43000):
+while(get_elapsed_seconds(total_elapsed) < 30):
   ret, frame = cap.read()
 
   if ret == True:
