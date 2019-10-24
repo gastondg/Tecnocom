@@ -16,8 +16,8 @@ Nombres válidos:
 2019-11-05 08:30 contaminacion polvillo
 """
 
-NOMBRE_VIDEO = now + " nombre" + "{}.avi"
-
+path = "./Videos/"
+NOMBRE_VIDEO = path + now + " nombre" + "{}.avi"
 
 def get_elapsed_seconds(start):
   # devuelve el tiempo transcurrido, en segundos

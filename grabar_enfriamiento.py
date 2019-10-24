@@ -16,8 +16,8 @@ Nombres válidos:
 2019-11-05 08:30 contaminacion polvillo
 """
 
-NOMBRE_VIDEO = now + " nombre" + "{}.avi"
 path = "./Videos/"
+NOMBRE_VIDEO = path + now + " nombre" + "{}.avi"
 
 def get_elapsed_seconds(start):
   # devuelve el tiempo transcurrido, en segundos
@@ -25,7 +25,7 @@ def get_elapsed_seconds(start):
 
 def get_nuevo_vid(NOMBRE_VIDEO, frame_width, frame_height):
   """ Devuelve un nuevo cv2 writer de video """
-  out = cv2.VideoWriter(path+NOMBRE_VIDEO, cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'),\
+  out = cv2.VideoWriter(NOMBRE_VIDEO, cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'),\
       15, (frame_width, frame_height))
   return out
 
