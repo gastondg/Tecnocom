@@ -48,7 +48,7 @@ out = get_nuevo_vid(NOMBRE_VIDEO.format(i), frame_width, frame_height)
 start = time.time()
 total_elapsed = time.time()
 
-while(get_elapsed_seconds(total_elapsed) < 43000):
+while(get_elapsed_seconds(total_elapsed) < 100):
   ret, frame = cap.read()
 
   if ret == True:
