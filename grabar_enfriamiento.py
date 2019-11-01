@@ -17,7 +17,7 @@ Nombres válidos:
 """
 
 path = "./Videos/"
-NOMBRE_VIDEO = path + now + " nombre" + "{}.avi"
+NOMBRE_VIDEO = path + now + " enfriamiento" + "{}.avi"
 
 def get_elapsed_seconds(start):
   # devuelve el tiempo transcurrido, en segundos
