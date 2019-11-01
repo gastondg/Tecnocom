@@ -73,6 +73,8 @@ while(get_elapsed_seconds(total_elapsed) < 100):
     print(porcentaje_unos)
 
     cv2.imshow('frame', frame)
+    cv2.imshow('Mask', mask)
+
     # Presionar Q para salir
     if k == ord('q'):
       print("Bye")
