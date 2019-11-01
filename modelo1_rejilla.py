@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+import time
 
 def get_elapsed_seconds(start):
   # devuelve el tiempo transcurrido, en segundos
