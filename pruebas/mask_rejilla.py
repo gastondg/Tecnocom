@@ -83,7 +83,7 @@ def get_range(corte):
 
 # Leer el archivo
 #cap = cv2.VideoCapture('./Videos/Videos/10-22-2019 16-09 con luz led de punta de linea.avi')
-cap = cv2.VideoCapture('./Videos/Videos/2019-10-29 12-29 rejilla.avi')
+cap = cv2.VideoCapture('./Videos/Videos/2019-11-01 12-30 rejilla1.avi')
 
 # Check if camera opened successfully
 if (cap.isOpened()== False): 
@@ -152,7 +152,7 @@ while(cap.isOpened()):
  
   # Break the loop
   else: 
-    cap = cv2.VideoCapture('./Videos/Videos/2019-10-29 12-29 rejilla.avi')
+    cap = cv2.VideoCapture('./Videos/Videos/2019-11-01 12-30 rejilla1.avi')
  
 # When everything done, release the video capture object
 cap.release()
