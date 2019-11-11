@@ -1,6 +1,8 @@
 import cv2
 import numpy as np
 import time
+import boto3
+
 
 def get_elapsed_seconds(start):
   # devuelve el tiempo transcurrido, en segundos
@@ -35,6 +37,14 @@ def get_porcentaje_color(mask):
 
     return porcentaje_unos, porcentaje_ceros
 
+def enviar_sms(cliente,telefono="+543794409048" texto = "Alerta"):
+  """
+  ENVIA EL SMS
+  """
+  a = cliente.publish(PhoneNumber=telefono, Message=texto)
+  return a
+
+
 cam_url = 'rtsp://10.10.4.151:554/cam/realmonitor?channel=1&subtype=0&authbasic=YWRtaW46dGVjbm8yMA=='
 
 cap = cv2.VideoCapture(cam_url)
@@ -49,6 +59,12 @@ frame_height = int(cap.get(4))
 start = time.time()
 total_elapsed = time.time()
 
+# Creamos el objeto que manda SMS
+client = boto3.client("sns", "us-east-1")
+
+# Colocamos bandera de espera
+wait_seconds = time.time()
+wait = False
 
 while(get_elapsed_seconds(total_elapsed) < 100):
   # Capture frame-by-frame
@@ -71,6 +87,17 @@ while(get_elapsed_seconds(total_elapsed) < 100):
     print(porcentaje_ceros)
     print("Porcentaje unos:")
     print(porcentaje_unos)
+      
+    # if (porcentaje_unos > 50) and (not wait):
+    if not wait:
+      print("Aca deberia haber una alerta con SNS")
+      print(enviar_sms(texto="whatsaaaaaap"))
+      wait_seconds = time.time()
+      wait = True
+
+    if wait and (get_elapsed_seconds(wait_seconds) > 60) :
+      # Si paso mas de 1 min cuando la bandera de espera era True, ya podemos mandar alertas nuevamente
+      wait = False
 
     cv2.imshow('frame', frame)
     cv2.imshow('Mask', mask)

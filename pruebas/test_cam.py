@@ -2,10 +2,15 @@ import cv2
 import numpy as np
 import time
 
+
+
+
 caps = ['rtsp://10.10.4.152:554/cam/realmonitor?channel=1&subtype=0&authbasic=YWRtaW46dGVjbm8yMA==',
         'rtsp://10.10.4.151:554/cam/realmonitor?channel=1&subtype=0&authbasic=YWRtaW46dGVjbm8yMA==']
 
 filename = "outpy152.avi"
+
+
 for cap in caps:
   # Create a VideoCapture object
   cap = cv2.VideoCapture(cap)
