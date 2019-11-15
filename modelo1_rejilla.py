@@ -37,7 +37,7 @@ def get_porcentaje_color(mask):
 
     return porcentaje_unos, porcentaje_ceros
 
-def enviar_sms(cliente,telefono="+543794409048" texto = "Alerta"):
+def enviar_sms(cliente,telefono="+543794409048", texto = "Alerta"):
   """
   ENVIA EL SMS
   """

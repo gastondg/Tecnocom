@@ -1,45 +1,106 @@
 import cv2
 import numpy as np
+import matplotlib.pyplot as plt
 
-cap = cv2.VideoCapture('vtest.avi')
-frame_width = int( cap.get(cv2.CAP_PROP_FRAME_WIDTH))
 
-frame_height =int( cap.get( cv2.CAP_PROP_FRAME_HEIGHT))
+def rescale_frame(frame, percent=75):
+    scale_percent = percent / 100
+    width = int(frame.shape[1] * scale_percent )
+    height = int(frame.shape[0] * scale_percent )
+    dim = (width, height)
+    return cv2.resize(frame, dim, interpolation=cv2.INTER_AREA)
 
-fourcc = cv2.VideoWriter_fourcc('X','V','I','D')
+def reject_outliers(data, m=6):
+    return data[abs(data - np.mean(data)) < m * np.std(data)]
 
-out = cv2.VideoWriter("output.avi", fourcc, 5.0, (1280,720))
+def analisis(lista):
+    """ La lista contiene la cuenta de unos en la mask por cada frame """
+    print("Maximo de unos: {}".format(max(lista)))
+    print("Minimo de unos: {}".format(min(lista)))
+    lista = np.asarray(lista)
+    print("Promedio de unos: {}".format(np.mean(lista)))
+    print("Mediana de unos: {}".format(np.median(lista)))
+    lista = reject_outliers(lista)
+    plt.hist(lista)
+    plt.show()
+    return
+    
+cap = cv2.VideoCapture('./Videos/Videos/2019-11-05 16-18 enfriamiento1.avi')
+#cap = cv2.VideoCapture('./Videos/Videos/2019-11-15 10-07 enfriamiento1.avi')
+#cap = cv2.VideoCapture('./Videos/Videos/2019-11-13 12-54 enfriamiento1.avi')
+#cap = cv2.VideoCapture('./Videos/Videos/1 -  enfriamiento.avi')
 
-ret, frame1 = cap.read()
-ret, frame2 = cap.read()
-print(frame1.shape)
+
+# Parametros: history, threshold, DetectShadow
+mogSub = cv2.createBackgroundSubtractorMOG2()
+#KNNSub = cv2.createBackgroundSubtractorKNN()
+
+band = True
+x, y, w, h = 116, 407, 677, 133
+# Listas
+unos_mog = []
+unos_knn = []
+
 while cap.isOpened():
-    diff = cv2.absdiff(frame1, frame2)
-    gray = cv2.cvtColor(diff, cv2.COLOR_BGR2GRAY)
-    blur = cv2.GaussianBlur(gray, (5,5), 0)
-    _, thresh = cv2.threshold(blur, 20, 255, cv2.THRESH_BINARY)
-    dilated = cv2.dilate(thresh, None, iterations=3)
-    contours, _ = cv2.findContours(dilated, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
-    for contour in contours:
-        (x, y, w, h) = cv2.boundingRect(contour)
+    # Capture frame-by-frame
+    ret, frame = cap.read()
+    if ret == True:
+    
+        k = cv2.waitKey(1)
 
-        if cv2.contourArea(contour) < 900:
-            continue
-        cv2.rectangle(frame1, (x, y), (x+w, y+h), (0, 255, 0), 2)
-        cv2.putText(frame1, "Status: {}".format('Movement'), (10, 20), cv2.FONT_HERSHEY_SIMPLEX,
-                    1, (0, 0, 255), 3)
-    #cv2.drawContours(frame1, contours, -1, (0, 255, 0), 2)
+        # Resize para verlo
+        #frame = rescale_frame(frame, percent=20)
+        frame = cv2.pyrDown(frame)
+        frame = cv2.pyrDown(frame)
+        
+        frame = cv2.GaussianBlur(frame, (5,5),0)
+        frame = cv2.medianBlur(frame, 5)
 
-    image = cv2.resize(frame1, (1280,720))
-    out.write(image)
-    cv2.imshow("feed", frame1)
-    frame1 = frame2
-    ret, frame2 = cap.read()
+        # Seleccionamos la ROI presionando "r" en el teclado
+        if  k == ord('r'):
+            # obtengo la roi
+            x, y, w, h = cv2.selectROI("Frame", frame, False, False)
+            print("ROI: ")
+            print(x, y, w, h)
+            band = True
 
-    if cv2.waitKey(40) == 27:
-        break
+        if band: # esta seleccionada la ROI
+            
+            corte = frame[y:y+h, x:x+w]
+
+            # Remuevo el fondo
+            mask_mog = mogSub.apply(corte)
+            #mask_knn = KNNSub.apply(corte)
+
+            # añado los unos que encuentra
+            unos_mog.append(np.count_nonzero(mask_mog)) 
+            #unos_knn.append(np.count_nonzero(mask_knn))
+
+            #print("Unos MOG: {}".format(np.count_nonzero(mask_mog)))
+            #print("Unos KNN: {}".format(np.count_nonzero(mask_knn)))
+
+            #cv2.imshow("KNN Mask",mask_knn)
+            cv2.imshow("MOG2 Mask",mask_mog)
+        
+        cv2.imshow("Frame",frame)
+
+       # diff = cv2.absdiff(frame, mask_sustracted)
+       # cv2.imshow(diff)
+
+        if k == ord('q'):
+            break
+    else:
+        break 
+        #cap = cv2.VideoCapture('./Videos/Videos/1 -  enfriamiento.avi')
+
+# Una vez que salimos hacemos un analisis
+if unos_knn:    
+    print("Analisis de KNN")
+    print(analisis(unos_knn))
+if unos_mog:
+    print("Analisis de MOG2")
+    print(analisis(unos_mog))
 
 cv2.destroyAllWindows()
 cap.release()
-out.release()
