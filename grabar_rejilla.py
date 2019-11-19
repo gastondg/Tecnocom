@@ -42,8 +42,7 @@ print()
 print("No apagar")
 
 
-#while ((gmtime().tm_hour - 3) != 5) and ((gmtime().tm_min) < 50) :
-while ((gmtime().tm_hour - 3) != 15) and ((gmtime().tm_min) < 10) :
+while ((gmtime().tm_hour - 3) != 5) and ((gmtime().tm_min) < 50) :
   time.sleep(1000)
 
 
