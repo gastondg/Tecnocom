@@ -29,6 +29,12 @@ def get_nuevo_vid(NOMBRE_VIDEO, frame_width, frame_height):
       15, (frame_width, frame_height))
   return out
 
+from time import gmtime
+
+while (gmtime().tm_hour - 3) != 6:
+  time.sleep(1000)
+
+
 cam_url = 'rtsp://10.10.4.151:554/cam/realmonitor?channel=1&subtype=0&authbasic=YWRtaW46dGVjbm8yMA=='
 
 cap = cv2.VideoCapture(cam_url)
@@ -57,7 +63,7 @@ while(get_elapsed_seconds(total_elapsed) < 100):
     out.write(frame)
 
     # Display the resulting frame
-    cv2.imshow('frame', frame)
+    cv2.imshow('frame', cv2.pyrDown(frame))
     
     if int(get_elapsed_seconds(start)) >= 1500:
       # pasaron 15 min -> grabo el video 

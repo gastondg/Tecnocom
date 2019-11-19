@@ -1,6 +1,8 @@
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
+import csv
+import os
 
 
 def rescale_frame(frame, percent=75):
@@ -24,25 +26,36 @@ def analisis(lista):
     plt.hist(lista)
     plt.show()
     return
+
+def to_csv(lista, nombre):
+    """ Graba todo a csv """
+    with open(nombre, 'w', newline='') as myfile:
+        wr = csv.writer(myfile)
+        wr.writerow(lista)
+    return "Terminado " + nombre
     
-cap = cv2.VideoCapture('./Videos/Videos/2019-11-05 16-18 enfriamiento1.avi')
-#cap = cv2.VideoCapture('./Videos/Videos/2019-11-15 10-07 enfriamiento1.avi')
+#cap = cv2.VideoCapture('./Videos/Videos/2019-11-05 16-18 enfriamiento1.avi')
+cap = cv2.VideoCapture('./Videos/Videos/2019-11-15 10-07 enfriamiento1.avi')
 #cap = cv2.VideoCapture('./Videos/Videos/2019-11-13 12-54 enfriamiento1.avi')
 #cap = cv2.VideoCapture('./Videos/Videos/1 -  enfriamiento.avi')
 
+#for arch in os.listdir("./Videos/Videos"):
+    #if "enfriamiento" in arch:
+#cap = cv2.VideoCapture("./Videos/Videos/"+arch)
+#print("Analizando " + arch)
+#print()
 
 # Parametros: history, threshold, DetectShadow
-mogSub = cv2.createBackgroundSubtractorMOG2()
+mogSub = cv2.createBackgroundSubtractorMOG2(history=10)
 #KNNSub = cv2.createBackgroundSubtractorKNN()
 
 band = True
+
 x, y, w, h = 116, 407, 677, 133
 # Listas
 unos_mog = []
-unos_knn = []
 
 while cap.isOpened():
-
     # Capture frame-by-frame
     ret, frame = cap.read()
     if ret == True:
@@ -50,20 +63,22 @@ while cap.isOpened():
         k = cv2.waitKey(1)
 
         # Resize para verlo
-        #frame = rescale_frame(frame, percent=20)
-        frame = cv2.pyrDown(frame)
-        frame = cv2.pyrDown(frame)
+        blur = cv2.pyrDown(frame)
+        blur = cv2.pyrDown(blur)
+        #blur = cv2.GaussianBlur(blur, (5,5),0)
+        blur = cv2.medianBlur(blur, 5)
+        frame = rescale_frame(frame, percent=25)
         
-        frame = cv2.GaussianBlur(frame, (5,5),0)
-        frame = cv2.medianBlur(frame, 5)
+        #frame = cv2.GaussianBlur(frame, (5,5),0)
+        #frame = cv2.medianBlur(frame, 5)
 
         # Seleccionamos la ROI presionando "r" en el teclado
-        if  k == ord('r'):
+        """if  k == ord('r'):
             # obtengo la roi
             x, y, w, h = cv2.selectROI("Frame", frame, False, False)
             print("ROI: ")
             print(x, y, w, h)
-            band = True
+            band = True"""
 
         if band: # esta seleccionada la ROI
             
@@ -71,22 +86,18 @@ while cap.isOpened():
 
             # Remuevo el fondo
             mask_mog = mogSub.apply(corte)
-            #mask_knn = KNNSub.apply(corte)
 
             # añado los unos que encuentra
             unos_mog.append(np.count_nonzero(mask_mog)) 
-            #unos_knn.append(np.count_nonzero(mask_knn))
-
-            #print("Unos MOG: {}".format(np.count_nonzero(mask_mog)))
-            #print("Unos KNN: {}".format(np.count_nonzero(mask_knn)))
 
             #cv2.imshow("KNN Mask",mask_knn)
             cv2.imshow("MOG2 Mask",mask_mog)
         
         cv2.imshow("Frame",frame)
+        cv2.imshow("Blur",blur)
 
-       # diff = cv2.absdiff(frame, mask_sustracted)
-       # cv2.imshow(diff)
+    # diff = cv2.absdiff(frame, mask_sustracted)
+    # cv2.imshow(diff)
 
         if k == ord('q'):
             break
@@ -95,12 +106,9 @@ while cap.isOpened():
         #cap = cv2.VideoCapture('./Videos/Videos/1 -  enfriamiento.avi')
 
 # Una vez que salimos hacemos un analisis
-if unos_knn:    
-    print("Analisis de KNN")
-    print(analisis(unos_knn))
-if unos_mog:
-    print("Analisis de MOG2")
-    print(analisis(unos_mog))
+"""if unos_mog:
+    nombre = arch.replace(".avi", ".csv")
+    to_csv(unos_mog, nombre)"""
 
 cv2.destroyAllWindows()
 cap.release()
