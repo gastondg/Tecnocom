@@ -26,12 +26,6 @@ def get_nuevo_vid(NOMBRE_VIDEO, frame_width, frame_height):
       15, (frame_width, frame_height))
   return out
 
-def rescale_frame(frame, percent=75):
-    scale_percent = percent / 100
-    width = int(frame.shape[1] * scale_percent )
-    height = int(frame.shape[0] * scale_percent )
-    dim = (width, height)
-    return cv2.resize(frame, dim, interpolation=cv2.INTER_AREA)
 
 from time import gmtime
 
@@ -79,13 +73,13 @@ while(get_elapsed_seconds(total_elapsed) < 22000):
     # Display the resulting frame
     frame = cv2.pyrDown(frame)
     frame = cv2.pyrDown(frame)
-    cv2.imshow('frame', frame)
+    cv2.imshow('Rejilla', frame)
     
     # 300 seg = 5 min
     if int(get_elapsed_seconds(start)) >= 300:
-      # pasaron 15 min -> grabo el video 
+      # pasaron 5 min -> cambio el video 
       out.release()
-    
+      # incremento en 1 el marcador de video
       i += 1
       out = get_nuevo_vid(NOMBRE_VIDEO.format(i), frame_width, frame_height)
       start = time.time()

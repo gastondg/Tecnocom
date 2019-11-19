@@ -16,9 +16,6 @@ Nombres válidos:
 2019-11-05 08:30 contaminacion polvillo
 """
 
-path = "./Videos/"
-NOMBRE_VIDEO = path + now + " enfriamiento" + "{}.avi"
-
 def get_elapsed_seconds(start):
   # devuelve el tiempo transcurrido, en segundos
   return int(time.time() - start)
@@ -28,6 +25,22 @@ def get_nuevo_vid(NOMBRE_VIDEO, frame_width, frame_height):
   out = cv2.VideoWriter(NOMBRE_VIDEO, cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'),\
       15, (frame_width, frame_height))
   return out
+
+from time import gmtime
+
+print("Esperando a la hora indicada de produccion")
+print()
+print("No tocar la computadora")
+print()
+print("No apagar")
+
+
+while ((gmtime().tm_hour - 3) != 5) and ((gmtime().tm_min) < 50) :
+  time.sleep(1000)
+
+
+path = "./Videos/"
+NOMBRE_VIDEO = path + now + " enfriamiento" + "{}.avi"
 
 cam_url = 'rtsp://10.10.4.152:554/cam/realmonitor?channel=1&subtype=0&authbasic=YWRtaW46dGVjbm8yMA=='
 
@@ -48,7 +61,7 @@ out = get_nuevo_vid(NOMBRE_VIDEO.format(i), frame_width, frame_height)
 start = time.time()
 total_elapsed = time.time()
 
-while(get_elapsed_seconds(total_elapsed) < 100):
+while(get_elapsed_seconds(total_elapsed) < 22000):
   ret, frame = cap.read()
 
   if ret == True:
@@ -57,10 +70,12 @@ while(get_elapsed_seconds(total_elapsed) < 100):
     out.write(frame)
 
     # Display the resulting frame
-    cv2.imshow('frame', frame)
+    frame = cv2.pyrDown(frame)
+    frame = cv2.pyrDown(frame)
+    cv2.imshow('Enfriamiento', frame)
     
-    if int(get_elapsed_seconds(start)) >= 1500:
-      # pasaron 15 min -> grabo el video 
+    if int(get_elapsed_seconds(start)) >= 300:
+      # pasaron 5 min -> cambio el video 
       out.release()
     
       i += 1
