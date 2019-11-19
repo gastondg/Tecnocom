@@ -16,9 +16,6 @@ Nombres válidos:
 2019-11-05 08:30 contaminacion polvillo
 """
 
-path = "./Videos/"
-NOMBRE_VIDEO = path + now + " rejilla" + "{}.avi"
-
 def get_elapsed_seconds(start):
   # devuelve el tiempo transcurrido, en segundos
   return int(time.time() - start)
@@ -29,11 +26,29 @@ def get_nuevo_vid(NOMBRE_VIDEO, frame_width, frame_height):
       15, (frame_width, frame_height))
   return out
 
+def rescale_frame(frame, percent=75):
+    scale_percent = percent / 100
+    width = int(frame.shape[1] * scale_percent )
+    height = int(frame.shape[0] * scale_percent )
+    dim = (width, height)
+    return cv2.resize(frame, dim, interpolation=cv2.INTER_AREA)
+
 from time import gmtime
 
-while (gmtime().tm_hour - 3) != 6:
+print("Esperando a la hora indicada de produccion")
+print()
+print("No tocar la computadora")
+print()
+print("No apagar")
+
+
+#while ((gmtime().tm_hour - 3) != 5) and ((gmtime().tm_min) < 50) :
+while ((gmtime().tm_hour - 3) != 15) and ((gmtime().tm_min) < 10) :
   time.sleep(1000)
 
+
+path = "./Videos/"
+NOMBRE_VIDEO = path + now + " rejilla" + "{}.avi"
 
 cam_url = 'rtsp://10.10.4.151:554/cam/realmonitor?channel=1&subtype=0&authbasic=YWRtaW46dGVjbm8yMA=='
 
@@ -54,18 +69,21 @@ out = get_nuevo_vid(NOMBRE_VIDEO.format(i), frame_width, frame_height)
 start = time.time()
 total_elapsed = time.time()
 
-while(get_elapsed_seconds(total_elapsed) < 100):
+while(get_elapsed_seconds(total_elapsed) < 22000):
   ret, frame = cap.read()
 
   if ret == True:
 
-    # Write the frame into the file 'output.avi'
+    # Escribir el frame en 'archivo.avi'
     out.write(frame)
 
     # Display the resulting frame
-    cv2.imshow('frame', cv2.pyrDown(frame))
+    frame = cv2.pyrDown(frame)
+    frame = cv2.pyrDown(frame)
+    cv2.imshow('frame', frame)
     
-    if int(get_elapsed_seconds(start)) >= 1500:
+    # 300 seg = 5 min
+    if int(get_elapsed_seconds(start)) >= 300:
       # pasaron 15 min -> grabo el video 
       out.release()
     
