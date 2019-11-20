@@ -35,80 +35,81 @@ def to_csv(lista, nombre):
     return "Terminado " + nombre
     
 #cap = cv2.VideoCapture('./Videos/Videos/2019-11-05 16-18 enfriamiento1.avi')
-cap = cv2.VideoCapture('./Videos/Videos/2019-11-15 10-07 enfriamiento1.avi')
+#cap = cv2.VideoCapture('./Videos/Videos/2019-11-15 10-07 enfriamiento1.avi')
 #cap = cv2.VideoCapture('./Videos/Videos/2019-11-13 12-54 enfriamiento1.avi')
 #cap = cv2.VideoCapture('./Videos/Videos/1 -  enfriamiento.avi')
 
-#for arch in os.listdir("./Videos/Videos"):
-    #if "enfriamiento" in arch:
-#cap = cv2.VideoCapture("./Videos/Videos/"+arch)
-#print("Analizando " + arch)
-#print()
+for arch in os.listdir("./Videos/Videos"):
+    if "enfriamiento" in arch:
+        cap = cv2.VideoCapture("./Videos/Videos/"+arch)
+        print("Analizando " + arch)
+        print()
 
-# Parametros: history, threshold, DetectShadow
-mogSub = cv2.createBackgroundSubtractorMOG2(history=10)
-#KNNSub = cv2.createBackgroundSubtractorKNN()
+        # Parametros: history, threshold, DetectShadow
+        mogSub = cv2.createBackgroundSubtractorMOG2(history=15)
+        #KNNSub = cv2.createBackgroundSubtractorKNN()
 
-band = True
+        band = True
 
-x, y, w, h = 116, 407, 677, 133
-# Listas
-unos_mog = []
+        x, y, w, h = 116, 407, 677, 133
+        # Listas
+        unos_mog = []
 
-while cap.isOpened():
-    # Capture frame-by-frame
-    ret, frame = cap.read()
-    if ret == True:
-    
-        k = cv2.waitKey(1)
-
-        # Resize para verlo
-        blur = cv2.pyrDown(frame)
-        blur = cv2.pyrDown(blur)
-        #blur = cv2.GaussianBlur(blur, (5,5),0)
-        blur = cv2.medianBlur(blur, 5)
-        frame = rescale_frame(frame, percent=25)
-        
-        #frame = cv2.GaussianBlur(frame, (5,5),0)
-        #frame = cv2.medianBlur(frame, 5)
-
-        # Seleccionamos la ROI presionando "r" en el teclado
-        """if  k == ord('r'):
-            # obtengo la roi
-            x, y, w, h = cv2.selectROI("Frame", frame, False, False)
-            print("ROI: ")
-            print(x, y, w, h)
-            band = True"""
-
-        if band: # esta seleccionada la ROI
+        while cap.isOpened():
+            # Capture frame-by-frame
+            ret, frame = cap.read()
+            if ret == True:
             
-            corte = frame[y:y+h, x:x+w]
+                k = cv2.waitKey(1)
 
-            # Remuevo el fondo
-            mask_mog = mogSub.apply(corte)
 
-            # añado los unos que encuentra
-            unos_mog.append(np.count_nonzero(mask_mog)) 
+                # Resize para verlo
+                blur = cv2.pyrDown(frame)
+                blur = cv2.pyrDown(blur)
+                blur = cv2.GaussianBlur(blur, (5,5),0)
+                #blur = cv2.medianBlur(blur, 5)
+                frame = rescale_frame(frame, percent=25)
+                
+                # Dibujo el rectangulo
+                frame = cv2.rectangle(frame, (x,y), (x+w,y+h), (255,0,0), 2) 
+                
+                # Seleccionamos la ROI presionando "r" en el teclado
+                """if  k == ord('r'):
+                    # obtengo la roi
+                    x, y, w, h = cv2.selectROI("Frame", frame, False, False)
+                    print("ROI: ")
+                    print(x, y, w, h)
+                    band = True"""
 
-            #cv2.imshow("KNN Mask",mask_knn)
-            cv2.imshow("MOG2 Mask",mask_mog)
-        
-        cv2.imshow("Frame",frame)
-        cv2.imshow("Blur",blur)
+                if band: # esta seleccionada la ROI
+                    
+                    corte = frame[y:y+h, x:x+w]
 
-    # diff = cv2.absdiff(frame, mask_sustracted)
-    # cv2.imshow(diff)
+                    # Remuevo el fondo
+                    mask_mog = mogSub.apply(corte)
 
-        if k == ord('q'):
-            break
-    else:
-        break 
-        #cap = cv2.VideoCapture('./Videos/Videos/1 -  enfriamiento.avi')
+                    # añado los unos que encuentra
+                    unos_mog.append(np.count_nonzero(mask_mog)) 
 
-# Una vez que salimos hacemos un analisis
-"""if unos_mog:
-    nombre = arch.replace(".avi", ".csv")
-    to_csv(unos_mog, nombre)"""
+                    #cv2.imshow("KNN Mask",mask_knn)
+                    cv2.imshow("MOG2 Mask",mask_mog)
+                
+                cv2.imshow("Frame",frame)
+                cv2.imshow("Blur",blur)
 
-cv2.destroyAllWindows()
-cap.release()
+            # diff = cv2.absdiff(frame, mask_sustracted)
+            # cv2.imshow(diff)
+
+                if k == ord('q'):
+                    break
+            else:
+                break 
+                #cap = cv2.VideoCapture('./Videos/Videos/1 -  enfriamiento.avi')
+
+        # Una vez que salimos hacemos un analisis
+        if unos_mog:
+            nombre = arch.replace(".avi", ".csv")
+            to_csv(unos_mog, nombre)
+
+        cv2.destroyAllWindows()
+        cap.release()
