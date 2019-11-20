@@ -66,7 +66,7 @@ for arch in os.listdir("./Videos/Videos"):
                 # Resize para verlo
                 blur = cv2.pyrDown(frame)
                 blur = cv2.pyrDown(blur)
-                blur = cv2.GaussianBlur(blur, (5,5),0)
+                blur = cv2.GaussianBlur(blur, (15,15),0)
                 #blur = cv2.medianBlur(blur, 5)
                 frame = rescale_frame(frame, percent=25)
                 
