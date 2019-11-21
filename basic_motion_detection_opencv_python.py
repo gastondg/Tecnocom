@@ -83,7 +83,7 @@ for arch in os.listdir("./Videos/Videos"):
 
                 if band: # esta seleccionada la ROI
                     
-                    corte = frame[y:y+h, x:x+w]
+                    corte = blur[y:y+h, x:x+w]
 
                     # Remuevo el fondo
                     mask_mog = mogSub.apply(corte)

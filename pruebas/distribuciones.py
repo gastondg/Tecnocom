@@ -89,7 +89,7 @@ def get_range(corte):
 
 # Leer el archivo
 #cap = cv2.VideoCapture('./Videos/Videos/10-22-2019 16-09 con luz led de punta de linea.avi')
-cap = cv2.VideoCapture('./Videos/Videos/2019-11-01 12-30 rejilla1.avi')
+cap = cv2.VideoCapture('./Videos/Videos/2019-11-20 19-13 rejilla5.avi')
 
 # Check if camera opened successfully
 if (cap.isOpened()== False): 
@@ -116,7 +116,7 @@ while(cap.isOpened()):
     k = cv2.waitKey(1)
 
     # Resize for seeing
-    frame = rescale_frame(frame, percent=40)
+    frame = rescale_frame(frame, percent=25)
 
     # Seleccionamos la ROI presionando "r" en el teclado
     if  k == ord('r'):
