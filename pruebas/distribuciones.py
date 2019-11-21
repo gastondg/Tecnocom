@@ -95,15 +95,15 @@ cap = cv2.VideoCapture('./Videos/Videos/2019-11-20 19-13 rejilla5.avi')
 if (cap.isOpened()== False): 
   print("Error opening video stream or file")
 
-#cv2.namedWindow("hsv_picker")
+cv2.namedWindow("hsv_picker")
 # defino lower
-#cv2.createTrackbar("Low H", "hsv_picker", 0, 255, nothing)
-#cv2.createTrackbar("Low S", "hsv_picker", 0, 255, nothing)
-#cv2.createTrackbar("Low V", "hsv_picker", 0, 255, nothing)
+cv2.createTrackbar("Low H", "hsv_picker", 0, 255, nothing)
+cv2.createTrackbar("Low S", "hsv_picker", 0, 255, nothing)
+cv2.createTrackbar("Low V", "hsv_picker", 0, 255, nothing)
 # defino upper
-#cv2.createTrackbar("Up H", "hsv_picker", 255, 255, nothing)
-#cv2.createTrackbar("Up S", "hsv_picker", 255, 255, nothing)
-#cv2.createTrackbar("Up V", "hsv_picker", 255, 255, nothing)
+cv2.createTrackbar("Up H", "hsv_picker", 255, 255, nothing)
+cv2.createTrackbar("Up S", "hsv_picker", 255, 255, nothing)
+cv2.createTrackbar("Up V", "hsv_picker", 255, 255, nothing)
 
 band = False
 
@@ -132,29 +132,29 @@ while(cap.isOpened()):
       corte = cv2.cvtColor(corte, cv2.COLOR_BGR2HSV)
       #h1,s,v = cv2.split(corte)
       #print(h1)
-      hist = cv2.calcHist([corte],[0],None,[256],[0,256])
-      plt.plot(hist)
-      plt.show()
-      band= False
+      #hist = cv2.calcHist([corte],[0],None,[256],[0,256])
+      #plt.plot(hist)
+      #plt.show()
+      #band= False
       
 
-#
-      #low_h = cv2.getTrackbarPos("Low H", "hsv_picker")
-      #low_s = cv2.getTrackbarPos("Low S", "hsv_picker")
-      #low_v = cv2.getTrackbarPos("Low V", "hsv_picker")
-#
-      #up_h = cv2.getTrackbarPos("Up H", "hsv_picker")
-      #up_s = cv2.getTrackbarPos("Up S", "hsv_picker")
-      #up_v = cv2.getTrackbarPos("Up V", "hsv_picker")
-#
-      #lower_color = np.array([low_h, low_s, low_v])
-      #upper_color = np.array([up_h, up_s, up_v])
-#
-      #mask = cv2.inRange(hsv, lower_color, upper_color)
-      ##res = cv2.bitwise_and(img, img, mask=mask)
 
-      #cv2.imshow("Mask", mask)
-      #cv2.imshow("Result", res)
+      low_h = cv2.getTrackbarPos("Low H", "hsv_picker")
+      low_s = cv2.getTrackbarPos("Low S", "hsv_picker")
+      low_v = cv2.getTrackbarPos("Low V", "hsv_picker")
+
+      up_h = cv2.getTrackbarPos("Up H", "hsv_picker")
+      up_s = cv2.getTrackbarPos("Up S", "hsv_picker")
+      up_v = cv2.getTrackbarPos("Up V", "hsv_picker")
+
+      lower_color = np.array([low_h, low_s, low_v])
+      upper_color = np.array([up_h, up_s, up_v])
+
+      mask = cv2.inRange(corte, lower_color, upper_color)
+      res = cv2.bitwise_not(frame[y:y+h, x:x+w], frame[y:y+h, x:x+w], mask=mask)
+
+      cv2.imshow("Mask", mask)
+      cv2.imshow("Result", res)
             
       #band = False
     
@@ -166,8 +166,10 @@ while(cap.isOpened()):
       break
  
   # Break the loop
-  else: 
-    cap = cv2.VideoCapture('./Videos/Videos/2019-11-01 12-30 rejilla1.avi')
+  else:
+    cap = cv2.VideoCapture('./Videos/Videos/2019-11-20 19-13 rejilla5.avi')
+
+    #cap = cv2.VideoCapture('./Videos/Videos/2019-11-01 12-30 rejilla1.avi')
  
 # When everything done, release the video capture object
 cap.release()

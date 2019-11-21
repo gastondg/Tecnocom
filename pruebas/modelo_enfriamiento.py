@@ -28,7 +28,7 @@ def is_producing(lista):
     return False
 
 # Leer el archivo
-cap = cv2.VideoCapture('./Videos/Videos/2019-11-20 19-13 rejilla6.avi')
+cap = cv2.VideoCapture('./Videos/Videos/2019-11-20 19-13 enfriamiento5.avi')
 
 # Check if camera opened successfully
 if (cap.isOpened()== False): 
@@ -37,8 +37,10 @@ if (cap.isOpened()== False):
 # Booleano de en Producción o no comienza en false
 produccion = False
 prod_frame_anterior = produccion
-#x, y, w, h = 116, 407, 677, 133
-x, y, w, h = 115, 193, 618, 267
+# enfriamiento
+x, y, w, h = 116, 407, 677, 133
+# rejilla
+#x, y, w, h = 115, 193, 618, 267
 
 # Inicializo contador de frames en 2 
 i=2
@@ -71,7 +73,7 @@ while(cap.isOpened()):
         frame = cv2.rectangle(frame, (x,y), (x+w,y+h), (255,0,0), 2) 
 
         # Agrego unos a la lista
-        unos_blur_v = unos_blur(frame, x, y, h, w, mogSub)
+        unos_blur_v = unos_blur(blur, x, y, h, w, mogSub)
         lista_unos_fondo.append(unos_blur_v)
 
         # actualizo booleano anterior
@@ -103,8 +105,11 @@ while(cap.isOpened()):
 
         cv2.imshow("Frame",frame)
         cv2.imshow("Blur",blur)
-    
-    cv2.destroyAllWindows()
-    cap.release()
+    # Break the loop
+    else:
+        cap = cv2.VideoCapture('./Videos/Videos/2019-11-20 19-13 enfriamiento5.avi')
+        #break
+cv2.destroyAllWindows()
+cap.release()
 
     

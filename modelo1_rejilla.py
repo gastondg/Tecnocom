@@ -46,6 +46,7 @@ def enviar_sms(cliente,telefono="+543794409048", texto = "Alerta"):
 
 
 cam_url = 'rtsp://10.10.4.151:554/cam/realmonitor?channel=1&subtype=0&authbasic=YWRtaW46dGVjbm8yMA=='
+cam_url = './Videos/Videos/2019-11-20 19-13 rejilla5.avi'
 
 cap = cv2.VideoCapture(cam_url)
 
@@ -74,10 +75,11 @@ while(get_elapsed_seconds(total_elapsed) < 100):
     k = cv2.waitKey(1)
 
     # Resize for seeing
-    frame = rescale_frame(frame, percent=40)
+    frame = rescale_frame(frame, percent=25)
 
     # defino la rejilla
-    x,y,w,h = 273, 150, 754, 331
+    #x,y,w,h = 273, 150, 754, 331
+    x, y, w, h = 115, 193, 618, 267
     rejilla = frame[y:y+h, x:x+w]
     # obtengo la mask con 1s y 0s
     mask = get_silver_mask(rejilla)
@@ -91,7 +93,7 @@ while(get_elapsed_seconds(total_elapsed) < 100):
     # if (porcentaje_unos > 50) and (not wait):
     if not wait:
       print("Aca deberia haber una alerta con SNS")
-      print(enviar_sms(texto="whatsaaaaaap"))
+      print(enviar_sms(client, texto="whatsaaaaaap"))
       wait_seconds = time.time()
       wait = True
 
