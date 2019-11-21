@@ -20,9 +20,10 @@ def unos_blur(blur, x, y, h, w, mogSub):
 def is_producing(lista):
     
     list = np.array(lista)
-    min = list.min()
-    
-    if min > 500:
+    minimo = list.min()
+    print()
+    print("Minimo de la lista: " + str(minimo))
+    if minimo > 500:
         return True
     return False
 
@@ -74,10 +75,11 @@ while(cap.isOpened()):
         lista_unos_fondo.append(unos_blur_v)
 
         # actualizo booleano anterior
-        prod_frame_anterior = produccion
 
         if (i % 75) == 0:
+            prod_frame_anterior = produccion
             produccion = is_producing(lista_unos_fondo)
+            print("Produccion: " + str(produccion))
             i = 2
             lista_unos_fondo = []
         """i+=1
