@@ -28,7 +28,7 @@ def is_producing(lista):
     return False
 
 # Leer el archivo
-cap = cv2.VideoCapture('./Videos/Videos/2019-11-20 19-13 rejilla5.avi')
+cap = cv2.VideoCapture('./Videos/Videos/2019-11-20 19-13 rejilla6.avi')
 
 # Check if camera opened successfully
 if (cap.isOpened()== False): 
@@ -71,19 +71,19 @@ while(cap.isOpened()):
         frame = cv2.rectangle(frame, (x,y), (x+w,y+h), (255,0,0), 2) 
 
         # Agrego unos a la lista
-        unos_blur_v = unos_blur(blur, x, y, h, w, mogSub)
+        unos_blur_v = unos_blur(frame, x, y, h, w, mogSub)
         lista_unos_fondo.append(unos_blur_v)
 
         # actualizo booleano anterior
 
-        if (i % 75) == 0:
+        if i % 75 == 0:
             prod_frame_anterior = produccion
             produccion = is_producing(lista_unos_fondo)
             print("Produccion: " + str(produccion))
             i = 2
             lista_unos_fondo = []
-        """i+=1
-        print(i, lista_unos_fondo)"""
+        i+=1
+        """print(i, lista_unos_fondo)"""
         
         if produccion:
             
@@ -91,17 +91,20 @@ while(cap.isOpened()):
 
             if not prod_frame_anterior:
                 print("Empezando la produccion " + fecha_hora)
+                prod_frame_anterior = produccion
                 print()
             
         if not produccion and prod_frame_anterior:
             # significa que dejo de producir
             fecha_hora = datetime.now().strftime("%Y-%m-%d %H:%M:%S") 
             print("Fin de la produccion " + fecha_hora)
+            prod_frame_anterior = produccion
 
 
         cv2.imshow("Frame",frame)
         cv2.imshow("Blur",blur)
-
-
+    
+    cv2.destroyAllWindows()
+    cap.release()
 
     
