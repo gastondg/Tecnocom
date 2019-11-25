@@ -26,6 +26,7 @@ def get_nuevo_vid(NOMBRE_VIDEO, frame_width, frame_height):
       15, (frame_width, frame_height))
   return out
 
+"""
 from time import gmtime
 
 print("Esperando a la hora indicada de produccion")
@@ -34,10 +35,10 @@ print("No tocar la computadora")
 print()
 print("No apagar")
 
+while ((gmtime().tm_hour - 3) != 8) and ((gmtime().tm_min) != 45) :
+  time.sleep(0)
 
-while ((gmtime().tm_hour - 3) != 5) and ((gmtime().tm_min) < 50) :
-  time.sleep(1000)
-
+"""
 
 path = "./Videos/"
 NOMBRE_VIDEO = path + now + " enfriamiento" + "{}.avi"
