@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 import time
 import boto3
+import logging
 
 
 def get_elapsed_seconds(start):
@@ -29,9 +30,9 @@ def get_porcentaje_color(mask):
     unos = color , ceros = ausencia de color
     """ 
     unos = np.sum(mask == 255)
-    print("Numero de unos: " + str(unos))
+    #print("Numero de unos: " + str(unos))
     ceros = np.sum(mask == 0)
-    print("Numero de ceros: " + str(ceros))
+    #print("Numero de ceros: " + str(ceros))
     total = ceros + unos
     porcentaje_unos = (unos / total) * 100
     porcentaje_ceros = (ceros / total) * 100
@@ -45,6 +46,8 @@ def enviar_sms(cliente,telefono="+543794409048", texto = "Alerta"):
   a = cliente.publish(PhoneNumber=telefono, Message=texto)
   return a
 
+FORMAT = '%(asctime)s %(message)s'
+logging.basicConfig(filename='rejilla.log', filemode='a', format=FORMAT)
 
 cam_url = 'rtsp://10.10.4.151:554/cam/realmonitor?channel=1&subtype=0&authbasic=YWRtaW46dGVjbm8yMA=='
 cam_url = './Videos/Videos/2019-11-20 19-13 rejilla5.avi'
@@ -88,15 +91,20 @@ while(get_elapsed_seconds(total_elapsed) < 100):
     mask = get_silver_mask(rejilla)
     # obtengo porcentaje de 0s y 1s
     porcentaje_unos, porcentaje_ceros = get_porcentaje_color(mask)
-    print("Porcentaje ceros:")
+    """ print("Porcentaje ceros:")
     print(porcentaje_ceros)
     print("Porcentaje unos:")
-    print(porcentaje_unos)
+    print(porcentaje_unos) """
       
     # if (porcentaje_unos > 50) and (not wait):
-    if not wait and int(porcentaje_ceros) > 50:
+    if not wait and (int(porcentaje_ceros) > 47):
+      print("Porcentaje ceros:")
+      print(porcentaje_ceros)
+      print("Porcentaje unos:")
+      print(porcentaje_unos)
       print("Aca deberia haber una alerta con SNS")
-      print(enviar_sms(client, texto="whatsaaaaaap"))
+      logging.warning("Rejilla comprometida")
+      #print(enviar_sms(client, texto="alerta de llenado de rejilla"))
       wait_seconds = time.time()
       wait = True
 
