@@ -19,7 +19,8 @@ def get_silver_mask(corte):
   """ Devolvemos la silver mask """
   hsv = cv2.cvtColor(corte, cv2.COLOR_BGR2HSV)
   
-  mask = cv2.inRange(hsv, (0,0,130), (180,40,255))
+  #mask = cv2.inRange(hsv, (0,0,130), (180,40,255))
+  mask = cv2.inRange(hsv, (0,0,86), (255,90,255))
   
   return mask
   
@@ -76,11 +77,13 @@ while(get_elapsed_seconds(total_elapsed) < 100):
 
     # Resize for seeing
     frame = rescale_frame(frame, percent=25)
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
     # defino la rejilla
     #x,y,w,h = 273, 150, 754, 331
     x, y, w, h = 115, 193, 618, 267
     rejilla = frame[y:y+h, x:x+w]
+    
     # obtengo la mask con 1s y 0s
     mask = get_silver_mask(rejilla)
     # obtengo porcentaje de 0s y 1s
@@ -91,13 +94,13 @@ while(get_elapsed_seconds(total_elapsed) < 100):
     print(porcentaje_unos)
       
     # if (porcentaje_unos > 50) and (not wait):
-    if not wait:
+    if not wait and int(porcentaje_ceros) > 50:
       print("Aca deberia haber una alerta con SNS")
       print(enviar_sms(client, texto="whatsaaaaaap"))
       wait_seconds = time.time()
       wait = True
 
-    if wait and (get_elapsed_seconds(wait_seconds) > 60) :
+    if wait and (get_elapsed_seconds(wait_seconds) > 60):
       # Si paso mas de 1 min cuando la bandera de espera era True, ya podemos mandar alertas nuevamente
       wait = False
 
