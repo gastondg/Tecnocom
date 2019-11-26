@@ -90,6 +90,8 @@ def get_range(corte):
 # Leer el archivo
 #cap = cv2.VideoCapture('./Videos/Videos/10-22-2019 16-09 con luz led de punta de linea.avi')
 cap = cv2.VideoCapture('./Videos/Videos/2019-11-20 19-13 rejilla5.avi')
+cap = cv2.VideoCapture('./Videos/Videos/2019-11-25 10-15 rejilla1.avi')
+
 
 # Check if camera opened successfully
 if (cap.isOpened()== False): 
@@ -151,10 +153,10 @@ while(cap.isOpened()):
       upper_color = np.array([up_h, up_s, up_v])
 
       mask = cv2.inRange(corte, lower_color, upper_color)
-      res = cv2.bitwise_not(frame[y:y+h, x:x+w], frame[y:y+h, x:x+w], mask=mask)
+      #res = cv2.bitwise_and(frame[y:y+h, x:x+w], frame[y:y+h, x:x+w], mask=mask)
 
       cv2.imshow("Mask", mask)
-      cv2.imshow("Result", res)
+      #cv2.imshow("Result", res)
             
       #band = False
     
@@ -168,6 +170,7 @@ while(cap.isOpened()):
   # Break the loop
   else:
     cap = cv2.VideoCapture('./Videos/Videos/2019-11-20 19-13 rejilla5.avi')
+    cap = cv2.VideoCapture('./Videos/Videos/2019-11-25 10-15 rejilla1.avi')
 
     #cap = cv2.VideoCapture('./Videos/Videos/2019-11-01 12-30 rejilla1.avi')
  
